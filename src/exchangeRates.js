@@ -1,5 +1,6 @@
 import React from 'react';
 import { checkStatus, json } from './utils.js';
+import CurrencyFlag from 'react-currency-flags';
 import { css } from "@emotion/core";
 import ClipLoader from "react-spinners/ClipLoader";
 
@@ -44,7 +45,7 @@ class ExchangeRates extends React.Component {
 
         return (
             <div className="container pt-5">
-                <h2 className="mb-5">Exchange Rates</h2>
+                <h2 className="mb-5">Foreign exchange rates</h2>
                 {loading ?  
                     <>
                     <ClipLoader
@@ -73,7 +74,7 @@ class ExchangeRates extends React.Component {
                         })()}
                     </select>
         
-                    <table className="table mt-5">
+                    <table className="table table-bordered mt-5">
                         <thead>
                             <tr>
                             <th scope="col">Currency</th>
@@ -88,7 +89,15 @@ class ExchangeRates extends React.Component {
                             
                             const latestRates = Object.keys(rates).map(function(key) {
                                 if (baseCurrency !== key) {
-                                    return <tr key={key}><th scope="row">{key}</th><td>{rates[key]}</td></tr>
+                                    return (
+                                        <tr key={key}>
+                                            <th scope="row">
+                                                    <CurrencyFlag className="mr-3" currency={key} width={25} />
+                                                {key}
+                                            </th>
+                                            <td>{Math.round((rates[key] + Number.EPSILON) * 100) / 100}</td>
+                                        </tr>
+                                    )
                                 }
                             });
         

@@ -14,20 +14,22 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <Link to='/' className="navbar-brand font-weight-bold">HowMuch?</Link>
-          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link to='/' className="nav-link">Home</Link>
-              </li>
-              <li className="nav-item">
-                <Link to='/exchange-rates' className="nav-link">Exchange Rates</Link>
-              </li>
-            </ul>
+        <nav className="navbar navbar-expand-lg">
+          <div className="container pt-4">
+            <Link to='/' className="navbar-brand font-weight-bold">HowMuch?</Link>
+            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span className="navbar-toggler-icon"></span>
+            </button>
+            <div className="collapse navbar-collapse" id="navbarNav">
+              <ul className="navbar-nav ml-auto">
+                <li className="nav-item">
+                  <Link to='/' className="nav-link">Convert</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to='/exchange-rates' className="nav-link">Exchange Rates</Link>
+                </li>
+              </ul>
+            </div>
           </div>
         </nav>
 
