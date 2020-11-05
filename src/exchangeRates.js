@@ -1,5 +1,7 @@
 import React from 'react';
 import { checkStatus, json } from './utils.js';
+import { css } from "@emotion/core";
+import ClipLoader from "react-spinners/ClipLoader";
 
 class ExchangeRates extends React.Component {
     constructor(props) {
@@ -7,7 +9,8 @@ class ExchangeRates extends React.Component {
         this.state = { 
             baseCurrency: 'USD',
             rates: [],
-            error: ''
+            error: '',
+            loading: true
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -26,6 +29,10 @@ class ExchangeRates extends React.Component {
                 this.setState({ error: err.message})
                 console.log(err);
             });
+
+            setTimeout(() => {
+                this.setState({ loading: false });
+            }, 1000)           
     }
 
     handleChange() {
@@ -33,55 +40,67 @@ class ExchangeRates extends React.Component {
     }
 
     render() {
-        const { baseCurrency, rates, error } = this.state;
+        const { baseCurrency, rates, error, loading } = this.state;
 
         return (
             <div className="container pt-5">
-            <h2 className="mb-5">Exchange Rates</h2>
-            <label htmlFor="baseCurrency" className="mr-2">Select a currency</label>
-            <select name="baseCurrency" id="baseCurrency">
-                {(() => {
-                    if (error) {
-                        return error;
-                    }
-                    const currenciesList = Object.keys(rates).map(function(key) {
-                        if (baseCurrency === key) {
-                            return <option key={key} value={key} selected='selected'>{key}</option>
-                        }
+                <h2 className="mb-5">Exchange Rates</h2>
+                {loading ?  
+                    <>
+                    <ClipLoader
+                        size={50}
+                        color={"#123abc"}
+                        loading={this.state.loading}
+                        /> 
 
-                        return <option key={key} value={key}>{key}</option>
-                    })
-                    return currenciesList;
-                })()}
-            </select>
-
-            <table class="table mt-5">
-                <thead>
-                    <tr>
-                    <th scope="col">Currency</th>
-                    <th scope="col">Latest Rate</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {(() => {
-                    if (error) {
-                        return error;
-                    }
-                    
-                    const latestRates = Object.keys(rates).map(function(key) {
-                        if (baseCurrency !== key) {
-                            return <tr key={key}><th scope="row">{key}</th><td>{rates[key]}</td></tr>
-                        }
-                    });
-
-                    return latestRates;
-                    })()}
-                </tbody>
-            </table> 
+                    </>
+                    :  
+                    <>
+                    <label htmlFor="baseCurrency" className="mr-2">Select a currency</label>
+                    <select name="baseCurrency" id="baseCurrency">
+                        {(() => {
+                            if (error) {
+                                return error;
+                            }
+                            const currenciesList = Object.keys(rates).map(function(key) {
+                                if (baseCurrency === key) {
+                                    return <option key={key} value={key} selected='selected'>{key}</option>
+                                }
+        
+                                return <option key={key} value={key}>{key}</option>
+                            })
+                            return currenciesList;
+                        })()}
+                    </select>
+        
+                    <table className="table mt-5">
+                        <thead>
+                            <tr>
+                            <th scope="col">Currency</th>
+                            <th scope="col">Latest Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {(() => {
+                            if (error) {
+                                return error;
+                            }
+                            
+                            const latestRates = Object.keys(rates).map(function(key) {
+                                if (baseCurrency !== key) {
+                                    return <tr key={key}><th scope="row">{key}</th><td>{rates[key]}</td></tr>
+                                }
+                            });
+        
+                            return latestRates;
+                            })()}
+                        </tbody>
+                    </table> 
+                    </>
+                }
             </div>
         )
     }
-    
 }
 
 export default ExchangeRates;
