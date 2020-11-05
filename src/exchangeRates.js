@@ -36,8 +36,9 @@ class ExchangeRates extends React.Component {
         const { baseCurrency, rates, error } = this.state;
 
         return (
-            <div>
-            <h2>Exchange Rates</h2>
+            <div className="container pt-5">
+            <h2 className="mb-5">Exchange Rates</h2>
+            <label htmlFor="baseCurrency" className="mr-2">Select a currency</label>
             <select name="baseCurrency" id="baseCurrency">
                 {(() => {
                     if (error) {
@@ -53,18 +54,30 @@ class ExchangeRates extends React.Component {
                     return currenciesList;
                 })()}
             </select>
-            
-                {(() => {
-                if (error) {
-                    return error;
-                }
-                
-                const myRates = Object.keys(rates).map(function(key) {
-                    return <p key={key}>{key }{rates[key]}</p>
-                });
 
-                return myRates;
-                })()}
+            <table class="table mt-5">
+                <thead>
+                    <tr>
+                    <th scope="col">Currency</th>
+                    <th scope="col">Latest Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {(() => {
+                    if (error) {
+                        return error;
+                    }
+                    
+                    const latestRates = Object.keys(rates).map(function(key) {
+                        if (baseCurrency !== key) {
+                            return <tr key={key}><th scope="row">{key}</th><td>{rates[key]}</td></tr>
+                        }
+                    });
+
+                    return latestRates;
+                    })()}
+                </tbody>
+            </table> 
             </div>
         )
     }
