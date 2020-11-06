@@ -9,7 +9,7 @@ import Footer from './Footer';
 import Home from './Home';
 import ExchangeRates from './exchangeRates';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChartLine } from '@fortawesome/free-solid-svg-icons'
+import { faChartLine, faTable, faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 
 
 function App() {
@@ -22,17 +22,16 @@ function App() {
         </div>
         <nav className="navbar navbar-expand-lg">
           <div className="container pt-4">
-            <Link to='/' className="navbar-brand font-weight-bold">HowMuch?</Link>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <Link to='/' className="navbar-brand font-weight-bold">Convert.money</Link>
               <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse" id="navbarNav">
+            
+            <div className="navbar-collapse" id="navbarNav">
               <ul className="navbar-nav ml-auto">
                 <li className="nav-item">
-                  <Link to='/' className="nav-link">Convert</Link>
+                  <Link to='/' className="nav-link"><FontAwesomeIcon icon={faExchangeAlt} /> Convert</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to='/exchange-rates' className="nav-link">Exchange Rates</Link>
+                  <Link to='/exchange-rates' className="nav-link"><FontAwesomeIcon icon={faTable} /> Exchange Rates</Link>
                 </li>
               </ul>
             </div>

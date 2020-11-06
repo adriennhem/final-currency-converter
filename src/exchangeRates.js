@@ -53,7 +53,7 @@ class ExchangeRates extends React.Component {
 
         return (
             <div className="container pt-5">
-                <h2 className="mb-5">Foreign exchange rates</h2>
+                <h2 className="mb-3">Foreign exchange rates</h2>
                 {loading ?  
                     <>
                     <ClipLoader
@@ -65,7 +65,7 @@ class ExchangeRates extends React.Component {
                     </>
                     :  
                     <>
-                    <label htmlFor="baseCurrency" className="mr-2">Select a currency</label>
+                    <label htmlFor="baseCurrency" className="mr-2">You are viewing rates for</label>
                     <select name="baseCurrency" id="baseCurrency" value={baseCurrency} onChange={event => this.handleChange(event.target.value)}>
                         {(() => {
                             if (error) {
