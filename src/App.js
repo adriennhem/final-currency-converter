@@ -8,12 +8,18 @@ import './App.css';
 import Footer from './Footer';
 import Home from './Home';
 import ExchangeRates from './exchangeRates';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChartLine } from '@fortawesome/free-solid-svg-icons'
 
 
 function App() {
   return (
     <Router>
       <div className="App">
+        <div className="container-fluid" id="top-banner">
+                  
+            <p className="pt-2 pb-2"><FontAwesomeIcon icon={faChartLine} />  data provided by: <a href="https://exchangeratesapi.io/">Exchange Rates API</a></p> 
+        </div>
         <nav className="navbar navbar-expand-lg">
           <div className="container pt-4">
             <Link to='/' className="navbar-brand font-weight-bold">HowMuch?</Link>

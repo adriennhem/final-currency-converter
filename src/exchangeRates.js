@@ -18,26 +18,31 @@ class ExchangeRates extends React.Component {
         
     }
 
-    componentDidMount() {
+
+    fetchCurrency() {
+        console.log(this.state.baseCurrency);
         fetch(`https://alt-exchange-rate.herokuapp.com/latest?base=${this.state.baseCurrency}`)
             .then(checkStatus)
             .then(json)
             .then((data) => {
                 this.setState({ rates: data.rates, error: '' });
-                console.log(data.rates);
             })
             .catch(function(err) {
                 this.setState({ error: err.message})
                 console.log(err);
             });
-
-            setTimeout(() => {
-                this.setState({ loading: false });
-            }, 1000)           
     }
 
-    handleChange() {
-        // do nothing for now
+    componentDidMount() {
+            this.fetchCurrency();
+            setTimeout(() => {
+                this.setState({ loading: false });
+            }, 300)           
+    }
+
+    handleChange(e) {
+        console.log(e);
+        this.setState({ baseCurrency: e }, this.fetchCurrency);
     }
 
     render() {
@@ -58,16 +63,12 @@ class ExchangeRates extends React.Component {
                     :  
                     <>
                     <label htmlFor="baseCurrency" className="mr-2">Select a currency</label>
-                    <select name="baseCurrency" id="baseCurrency">
+                    <select name="baseCurrency" id="baseCurrency" value={baseCurrency} onChange={event => this.handleChange(event.target.value)}>
                         {(() => {
                             if (error) {
                                 return error;
                             }
                             const currenciesList = Object.keys(rates).map(function(key) {
-                                if (baseCurrency === key) {
-                                    return <option key={key} value={key} selected='selected'>{key}</option>
-                                }
-        
                                 return <option key={key} value={key}>{key}</option>
                             })
                             return currenciesList;
@@ -95,7 +96,7 @@ class ExchangeRates extends React.Component {
                                                     <CurrencyFlag className="mr-3" currency={key} width={25} />
                                                 {key}
                                             </th>
-                                            <td>{Math.round((rates[key] + Number.EPSILON) * 100) / 100}</td>
+                                            <td>{rates[key]}</td>
                                         </tr>
                                     )
                                 }

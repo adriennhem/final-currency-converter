@@ -22,11 +22,31 @@ code {
     monospace;
 }
 
+/* Banner */
+
+#top-banner {
+  background-color: #202BFF;
+  min-height: 5px;
+}
+
+#top-banner p, #top-banner a {
+  color: #fff;
+}
+
+#top-banner a {
+  text-decoration: underline;
+}
+
 /* Table */
+
+@media only screen and (min-width: 600px) {
+  table {
+    max-width: 60%;
+  }
+}
 
 table {
   margin: 0 auto;
-  max-width: 60%;
   background-color:  #fff;
   -webkit-box-shadow: 10px 10px 5px -5px rgba(235,235,235,1);
   -moz-box-shadow: 10px 10px 5px -5px rgba(235,235,235,1);
