@@ -31,6 +31,15 @@ code {
   font-size: 14px;
   font-weight: 400;
 }
+.convert {
+  margin: 0 auto;
+}
+
+@media only screen and (min-width: 600px) {
+  .convert {
+    max-width: 50%;
+  }
+}
 
 .nav-link, .navbar-brand {
   color: #202BFF; 
