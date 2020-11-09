@@ -42,9 +42,10 @@ function App() {
           <Route exact path='/'>
             <Home />
           </Route>
-          <Route path='/exchange-rates'>
+          <Route exact path='/exchange-rates'>
             <ExchangeRates />
           </Route>
+          <Route render={() => <h1>404 Page Not Found</h1>}></Route>
         </Switch>
         
         <Footer />
