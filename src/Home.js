@@ -35,12 +35,13 @@ class Home extends React.Component {
 
     componentDidMount() {
         this.fetchCurrency();
+        console.log(this.state)
     }
 
     handleChange(e) {
             const toRate = this.state.rates[this.state.toCurrency];
             const newValue = e.target.value * toRate;
-            this.setState({ convertedRate: newValue, baseRate: e.target.value })       
+            this.setState({ convertedRate: Number(newValue), baseRate: Number(e.target.value) })  
     }
 
     handleCurrencyChange(e) {
@@ -48,7 +49,7 @@ class Home extends React.Component {
             this.setState({ fromCurrency: e.target.value }, this.fetchCurrency)
             const toRate = this.state.rates[this.state.toCurrency];
             const newValue = e.target.value * toRate;
-            this.setState({ convertedRate: newValue })
+            this.setState({ convertedRate: Number(newValue) })
         }
 
         if (e.target.id === 'toCurrency') {
@@ -84,7 +85,7 @@ class Home extends React.Component {
                         return currenciesList;
                     })()}
                 </select>
-                <input type="text" defaultValue={baseRate} id="baseRate" onChange={(e) => {this.handleChange(e)}} className="form-control"/>
+                <input type="text" value={baseRate} id="baseRate" onChange={(e) => {this.handleChange(e)}} className="form-control"/>
             </div>
 
             <button onClick={(e) => this.handleSwap(e)}>
@@ -103,7 +104,7 @@ class Home extends React.Component {
                         return currenciesList;
                     })()}
                 </select>
-                <input type="text" id="convertedRate" value={convertedRate ? convertedRate : rates[toCurrency] } disabled="true"  className="form-control"/>
+                <input type="text" id="convertedRate" value={convertedRate !== null ? convertedRate : rates[toCurrency] } disabled="disabled"  className="form-control"/>
             </div>
             
             <p>Display exchange rate</p>
