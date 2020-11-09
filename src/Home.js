@@ -108,8 +108,8 @@ class Home extends React.Component {
 
     handleSwap() {
         this.setState({ fromCurrency: this.state.toCurrency, toCurrency: this.state.fromCurrency }, this.fetchCurrency)
+        this.getHistoricalRates(this.state.toCurrency, this.state.fromCurrency);
 
-        setTimeout(() => console.log(this.state), 500)
 
     }
 
