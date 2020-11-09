@@ -35,7 +35,6 @@ class Home extends React.Component {
 
     componentDidMount() {
         this.fetchCurrency();
-        console.log(this.state)
     }
 
     handleChange(e) {
@@ -106,8 +105,6 @@ class Home extends React.Component {
                 </select>
                 <input type="text" id="convertedRate" value={convertedRate !== null ? convertedRate : rates[toCurrency] } disabled="disabled"  className="form-control"/>
             </div>
-            
-            <p>Display exchange rate</p>
 
             </div>
 
