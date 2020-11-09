@@ -2,6 +2,8 @@ import React from "react";
 import { checkStatus, json } from './utils.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
+import Chart from 'chart.js';
+
 
 class Home extends React.Component {
     constructor(props) {
@@ -10,7 +12,7 @@ class Home extends React.Component {
             fromCurrency: 'USD',
             toCurrency: 'EUR',
             baseRate: 1,
-            convertedRate: null,
+            convertedRate: '',
             rates: [],
             error: '', 
         }
@@ -18,7 +20,51 @@ class Home extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleCurrencyChange = this.handleCurrencyChange.bind(this);
         this.handleSwap = this.handleSwap.bind(this);
+
+        this.chartRef = React.createRef();
     }
+
+    getHistoricalRates = (base, quote) => {
+        const endDate = new Date().toISOString().split('T')[0];
+        const startDate = new Date((new Date).getTime() - (30 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0];
+        fetch(`https://alt-exchange-rate.herokuapp.com/history?start_at=${startDate}&end_at=${endDate}&base=${base}&symbols=${quote}`)
+          .then(checkStatus)
+          .then(json)
+          .then(data => {
+            if (data.error) {
+              throw new Error(data.error);
+            }
+            const chartLabels = Object.keys(data.rates);
+            const chartData = Object.values(data.rates).map(rate => rate[quote]);
+            const chartLabel = `${base}/${quote}`;
+            this.buildChart(chartLabels, chartData, chartLabel);
+          })
+          .catch(error => console.error(error.message));
+      }
+      buildChart = (labels, data, label) => {
+        const chartRef = this.chartRef.current.getContext("2d");
+        if (typeof this.chart !== "undefined") {
+          this.chart.destroy();
+        }
+        this.chart = new Chart(this.chartRef.current.getContext("2d"), {
+          type: 'line',
+          data: {
+            labels,
+            datasets: [
+              {
+                label: label,
+                data,
+                fill: false,
+                tension: 0,
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+          }
+        })
+      }
+    
 
     fetchCurrency() {
         fetch(`https://alt-exchange-rate.herokuapp.com/latest?base=${this.state.fromCurrency}`)
@@ -35,6 +81,8 @@ class Home extends React.Component {
 
     componentDidMount() {
         this.fetchCurrency();
+        const { fromCurrency, toCurrency } = this.state;
+        this.getHistoricalRates(fromCurrency, toCurrency);
     }
 
     handleChange(e) {
@@ -49,10 +97,12 @@ class Home extends React.Component {
             const toRate = this.state.rates[this.state.toCurrency];
             const newValue = e.target.value * toRate;
             this.setState({ convertedRate: Number(newValue) })
+            this.getHistoricalRates(e.target.value, this.state.toCurrency);
         }
 
         if (e.target.id === 'toCurrency') {
-            this.setState({ toCurrency: Number(e.target.value) })
+            this.setState({ toCurrency: e.target.value })
+            this.getHistoricalRates(this.state.fromCurrency, e.target.value);
         }
     }
 
@@ -103,10 +153,12 @@ class Home extends React.Component {
                         return currenciesList;
                     })()}
                 </select>
-                <input type="text" id="convertedRate" value={convertedRate !== null ? convertedRate : rates[toCurrency] } disabled="disabled"  className="form-control"/>
+                <input type="text" id="convertedRate" defaultValue={convertedRate || rates[toCurrency]} disabled="disabled"  className="form-control"/>
             </div>
 
             </div>
+
+            <canvas ref={this.chartRef}/>
 
             </div>
         )
